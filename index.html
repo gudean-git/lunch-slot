@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>午餐拉霸機</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background-color: #f4f4f9; padding: 50px; }
+    h1 { color: #333; letter-spacing: 2px; }
+    .slot-machine { display: flex; justify-content: center; gap: 20px; margin: 40px 0; }
+    .slot { width: 160px; height: 100px; background-color: #fff; border: 4px solid #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; font-weight: bold; color: #d9534f; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 10px; }
+    button { padding: 15px 40px; font-size: 1.5em; font-weight: bold; color: white; background-color: #e6b800; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+    button:hover { background-color: #cca300; }
+    button:active { transform: translateY(2px); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+</style>
+</head>
+<body>
+
+    <h1>🎰 午餐拉霸機 🎰</h1>
+    
+    <div class="slot-machine">
+        <div class="slot" id="slot1">?</div>
+        <div class="slot" id="slot2">?</div>
+        <div class="slot" id="slot3">?</div>
+    </div>
+
+    <button onclick="spin()" id="spinBtn">拉霸開始</button>
+
+    <script>
+        const restaurants = [
+            "七哥燒肉飯", "鳳如辣辣火鍋", "炸雞鍋燒專賣店", 
+            "秘密廚房", "大陸牛肉麵", "法拉焗烤美食店", 
+            "哲筒仔米糕", "蕾臻河粉", "夏龍灣美食"
+        ];
+
+        function spin() {
+            const slots = [document.getElementById('slot1'), document.getElementById('slot2'), document.getElementById('slot3')];
+            const btn = document.getElementById('spinBtn');
+            btn.disabled = true; 
+            
+            let times = 0;
+            
+            // 快速跳動的動畫效果
+            const interval = setInterval(() => {
+                slots.forEach(slot => {
+                    slot.innerText = restaurants[Math.floor(Math.random() * restaurants.length)];
+                });
+                times++;
+                
+                if (times > 20) { 
+                    clearInterval(interval);
+                    // 確保最終抽出三個不重複的選項
+                    let shuffled = [...restaurants].sort(() => 0.5 - Math.random());
+                    slots[0].innerText = shuffled[0];
+                    slots[1].innerText = shuffled[1];
+                    slots[2].innerText = shuffled[2];
+                    btn.disabled = false;
+                }
+            }, 50);
+        }
+    </script>
+</body>
+</html>
